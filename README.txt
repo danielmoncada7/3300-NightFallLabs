@@ -8,10 +8,7 @@ Directory:
     risk_management
 
 /meeting_minutes
-    meeting_01
     
-/reports
-    milestone_report
 /src
     /frontend
         index.html
@@ -20,5 +17,8 @@ Directory:
     /backend
         server.js
         database.sql
+
+/deliverables
+    team_deliverables
         
 README.txt
