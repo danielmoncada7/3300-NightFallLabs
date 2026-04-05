@@ -1,3 +1,4 @@
+1) src/frontend/checkout.js
 const form = document.getElementById("checkoutForm");
 const orderType = document.getElementById("orderType");
 const address = document.getElementById("deliveryAddress");
@@ -7,24 +8,9 @@ const card = document.getElementById("cardNumber");
 const tipInput = document.getElementById("tipAmount");
 const message = document.getElementById("checkoutConfirmation");
 
-// gets cart from local storage
+// gets cart from browser storage
 function getCart() {
     return JSON.parse(localStorage.getItem("cart")) || [];
-}
-
-// gets saved orders
-function getOrders() {
-    return JSON.parse(localStorage.getItem("orders")) || [];
-}
-
-// saves updated orders
-function saveOrders(orders) {
-    localStorage.setItem("orders", JSON.stringify(orders));
-}
-
-// makes simple order id
-function generateId() {
-    return "ORD-" + Date.now();
 }
 
 // checks if card is 16 digits
@@ -32,15 +18,11 @@ function validCard(num) {
     return /^\d{16}$/.test(num);
 }
 
-// shows or hides address if pickup or delivery changes
+// shows or hides address based on order type
 function toggleAddress() {
-    if (!orderType || !address) {
-        return;
-    }
-
     const addressGroup = document.getElementById("deliveryAddressGroup");
 
-    if (!addressGroup) {
+    if (!orderType || !addressGroup || !address) {
         return;
     }
 
@@ -60,7 +42,7 @@ if (orderType) {
 }
 
 if (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const cart = getCart();
@@ -97,30 +79,46 @@ if (form) {
         });
 
         const tax = subtotal * 0.07;
-        const delivery = orderType.value === "Delivery" ? 3.99 : 0;
-        const service = 1.99;
+        const deliveryFee = orderType.value === "Delivery" ? 3.99 : 0;
+        const serviceFee = 1.99;
         const tip = Number(tipInput.value) || 0;
-        const total = subtotal + tax + delivery + service + tip;
+        const total = subtotal + tax + deliveryFee + serviceFee + tip;
 
-        // makes the new order object
-        const newOrder = {
-            id: generateId(),
-            date: new Date().toLocaleString(),
-            type: orderType.value,
+        // sends order to backend
+        const orderData = {
+            orderType: orderType.value,
             address: address.value.trim(),
             email: email.value.trim(),
+            cardholderName: name.value.trim(),
+            subtotal: subtotal,
+            tax: tax,
+            deliveryFee: deliveryFee,
+            serviceFee: serviceFee,
+            tip: tip,
             total: total,
             items: cart
         };
 
-        const orders = getOrders();
-        orders.push(newOrder);
-        saveOrders(orders);
+        try {
+            const response = await fetch("http://localhost:3000/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            });
 
-        // saves latest order for confirmation page
-        localStorage.setItem("latestOrder", JSON.stringify(newOrder));
-        localStorage.removeItem("cart");
+            const data = await response.json();
 
-        window.location.href = "confirmation.html";
+            if (!response.ok) {
+                message.textContent = data.message || "Order failed";
+                return;
+            }
+
+            localStorage.removeItem("cart");
+            window.location.href = `confirmation.html?orderId=${data.orderId}`;
+        } catch (error) {
+            message.textContent = "Could not connect to server";
+        }
     });
 }
