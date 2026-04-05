@@ -7,24 +7,56 @@ const card = document.getElementById("cardNumber");
 const tipInput = document.getElementById("tipAmount");
 const message = document.getElementById("checkoutConfirmation");
 
+// gets cart from local storage
 function getCart() {
     return JSON.parse(localStorage.getItem("cart")) || [];
 }
 
+// gets saved orders
 function getOrders() {
     return JSON.parse(localStorage.getItem("orders")) || [];
 }
 
+// saves updated orders
 function saveOrders(orders) {
     localStorage.setItem("orders", JSON.stringify(orders));
 }
 
+// makes simple order id
 function generateId() {
     return "ORD-" + Date.now();
 }
 
+// checks if card is 16 digits
 function validCard(num) {
     return /^\d{16}$/.test(num);
+}
+
+// shows or hides address if pickup or delivery changes
+function toggleAddress() {
+    if (!orderType || !address) {
+        return;
+    }
+
+    const addressGroup = document.getElementById("deliveryAddressGroup");
+
+    if (!addressGroup) {
+        return;
+    }
+
+    if (orderType.value === "Delivery") {
+        addressGroup.style.display = "block";
+        address.required = true;
+    } else {
+        addressGroup.style.display = "none";
+        address.required = false;
+        address.value = "";
+    }
+}
+
+if (orderType) {
+    orderType.addEventListener("change", toggleAddress);
+    toggleAddress();
 }
 
 if (form) {
@@ -59,7 +91,8 @@ if (form) {
         }
 
         let subtotal = 0;
-        cart.forEach(item => {
+
+        cart.forEach(function (item) {
             subtotal += item.price * item.quantity;
         });
 
@@ -67,15 +100,15 @@ if (form) {
         const delivery = orderType.value === "Delivery" ? 3.99 : 0;
         const service = 1.99;
         const tip = Number(tipInput.value) || 0;
-
         const total = subtotal + tax + delivery + service + tip;
 
+        // makes the new order object
         const newOrder = {
             id: generateId(),
             date: new Date().toLocaleString(),
             type: orderType.value,
-            address: address.value,
-            email: email.value,
+            address: address.value.trim(),
+            email: email.value.trim(),
             total: total,
             items: cart
         };
@@ -84,6 +117,7 @@ if (form) {
         orders.push(newOrder);
         saveOrders(orders);
 
+        // saves latest order for confirmation page
         localStorage.setItem("latestOrder", JSON.stringify(newOrder));
         localStorage.removeItem("cart");
 
