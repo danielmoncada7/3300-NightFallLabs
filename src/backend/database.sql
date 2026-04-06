@@ -40,5 +40,5 @@ SELECT 'Caesar Salad', 'Crisp romaine, parmesan, croutons, and Caesar dressing',
 WHERE NOT EXISTS (SELECT 1 FROM menu_items WHERE name = 'Caesar Salad');
 
 INSERT INTO menu_items (name, description, price, category, ingredients, allergens, dietary_tags, in_stock) 
-SELECT 'Peanut Butter Bacon Burger', 'Beef patty topped with bacon and creamy peanut butter', 10.99, 'Burgers', 'Beef, Bacon, Peanut Butter, Bun', 'Gluten, Nuts', 'None', 1
-WHERE NOT EXISTS (SELECT 1 FROM menu_items WHERE name = 'Peanut Butter Bacon Burger');
+SELECT 'PB and J Sandwich', 'Classic peanut butter and grape jelly on toasted bread', 5.99, 'Sandwiches', 'Peanut Butter, Jelly, Bread', 'Gluten, Nuts', 'Vegetarian', 1
+WHERE NOT EXISTS (SELECT 1 FROM menu_items WHERE name = 'PB and J Sandwich');
