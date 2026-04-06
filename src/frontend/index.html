@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Menu</title>
+</head>
+<body>
+    <header>
+        <!--Header search to allow users to search for menu items-->
+        <div class="header-search">
+            <!--Input box for keyword search-->
+            <input type="text" id="searchBox" placeholder="Search menu items"/>
+            <!--Button triggers the search in app.js-->
+            <button id="searchBtn">Search</button>
+        </div>
+        <!--Navigation links for swapping pages-->
+        <nav class="header-nav">
+            <a href="index.html">Menu</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <!--side bar for filtering items on menu-->
+        <aside class="filters">
+            <h2>Filters</h2>
+            <!--Food Filter-->
+            <label for="categoryFilter">Category</label>
+            <select id="categoryFilter">
+                <option value="All">All</option>
+                <option value="Burgers">Burgers</option>
+                <option value="Wraps">Wraps</option>
+                <option value="Salads">Salads</option>
+            </select>
+            <!--Allergen Filter-->
+            <h3>Exclude Allergens</h3>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="Dairy" class="allergenCheckbox">Dairy</label>
+                <label><input type="checkbox" value="Gluten" class="allergenCheckbox">Gluten</label>
+                <label><input type="checkbox" value="Soy" class="allergenCheckbox">Soy</label>
+                <label><input type="checkbox" value="Nuts" class="allergenCheckbox">Nuts</label>
+            </div>
+            <!--Dietary Restrictions Filter-->
+            <h3>Dietary Restrictions</h3>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="Vegetarian" class="dietaryCheckbox">Vegetarian</label>
+                <label><input type="checkbox" value="Vegan" class="dietaryCheckbox">Vegan</label>
+                <label><input type="checkbox" value="Gluten Free" class="dietaryCheckbox">Gluten Free</label>
+            </div>
+            <!--Applies filter by calling js function-->
+            <button id="applyFilterButton">Apply Filters</button>
+            <!--resets applied filters and reloads page-->
+            <button id="resetFiltersButton" class="secondary-button">Reset</button>
+        </aside>
+
+        <section class="content">
+            <h1>Menu</h1>
+            <div id="menuContainer"></div>
+        </section>
+    </main>
+
+    <!-- Model for viewing item information-->
+    <div id="itemInformationModal" class="modal hidden">
+        <div class="modal-content">
+            <!--close button to hide modal-->
+            <button class="close-button" id="closeDetailsModal">&times;</button>
+            <!--JS injects details here-->
+            <div id="itemInformationContent"></div>
+        </div>
+    </div>
+
+    <!--Item customization modal-->
+    <div id="customizationModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-button" id="closeCustomizationModal">&times;</button>
+            <!--js injects customization options-->
+            <div id="CustomizationContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

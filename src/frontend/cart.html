@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cart</title>
+</head>
+<body>
+    <header>
+        <nav class="header-nav">
+            <a href="index.html">Menu</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <section class="content">
+            <h1>Your Cart</h1>
+            <!--container where items are dynamically rendered-->
+            <div id="cartContainer">
+                <p>Your cart items are located here</p>
+            </div>
+            <!--displays calculated totals-->
+            <div id="cartTotals">
+                <p><strong>Subtotal:</strong> <span id="subtotalValue">$0.00</span></p>
+                <p><strong>Tax:</strong> <span id="taxValue">$0.00</span></p>
+                <p><strong>Delivery Fee:</strong> <span id="deliveryFeeValue">$0.00</span></p>
+                <p><strong>Service Fee:</strong> <span id="serviceFeeValue">$0.00</span></p>
+                <p><strong>Tip:</strong> <span id="tipValue">$0.00</span></p>
+                <h3>Total: <span id="totalValue">$0.00</span></h3>
+            </div>
+
+            <!--Navigation buttons-->
+            <div class="item-actions">
+                <a href="index.html">Continue Shopping</a>
+                <a href="checkout.html">Proceed to Checkout</a>
+            </div>
+        </section>
+    </main>
+    <!--loads cart functionality  -->
+    <script src="cart.js"></script>
+</body>
+</html>

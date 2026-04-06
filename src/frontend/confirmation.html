@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Confirmation</title>
+</head>
+<body>
+    <header>
+        <nav class="header-nav">
+            <a href="index.html">Menu</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <section class="content">
+            <!--confirmation message-->
+            <h1>Order Confirmed</h1>
+            <p>Your order has been placed successfully.</p>
+            <!--js inserts the order id-->
+            <p id="orderIdMessage">Order ID</p>
+            <!--navigation options -->
+            <div class="item-actions">
+                <a href="index.html">Back to Menu</a>
+                <a href="orders.html">View Orders</a>
+            </div>
+
+        </section>
+    </main>
+    <!--displays order id and confirmation-->
+    <script src="../Confirmation.js"></script>
+</body>
+</html>
