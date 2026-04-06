@@ -1,4 +1,4 @@
-1) src/frontend/checkout.js
+// 1) src/frontend/checkout.js
 const form = document.getElementById("checkoutForm");
 const orderType = document.getElementById("orderType");
 const address = document.getElementById("deliveryAddress");

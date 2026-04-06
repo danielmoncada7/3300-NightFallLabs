@@ -12,32 +12,37 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 // connect to database
+const fs = require("fs");
 const db = new sqlite3.Database(path.join(__dirname, "orders.db"), function (err) {
     if (err) {
         console.error("Database connection failed:", err.message);
     } else {
         console.log("Connected to database");
+        
+        // initialize database schema and seed data from database.sql
+        const initScript = fs.readFileSync(path.join(__dirname, "database.sql"), "utf-8");
+        db.exec(initScript, function (err) {
+            if (err) {
+                console.error("Failed to execute database.sql:", err.message);
+            } else {
+                console.log("Database tables verified and seeded.");
+            }
+        });
     }
 });
 
-// create orders table
-db.run(`
-    CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        order_type TEXT NOT NULL,
-        address TEXT,
-        email TEXT NOT NULL,
-        cardholder_name TEXT NOT NULL,
-        subtotal REAL NOT NULL,
-        tax REAL NOT NULL,
-        delivery_fee REAL NOT NULL,
-        service_fee REAL NOT NULL,
-        tip REAL NOT NULL,
-        total REAL NOT NULL,
-        items TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-`);
+// get all menu items
+app.get("/api/menu", function (req, res) {
+    const sql = `SELECT * FROM menu_items`;
+
+    db.all(sql, [], function (err, rows) {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ message: "Could not load menu" });
+        }
+        res.json(rows);
+    });
+});
 
 // create new order
 app.post("/api/orders", function (req, res) {
