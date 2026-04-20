@@ -25,12 +25,37 @@ async function loadOrders() {
         orders.forEach(function (order) {
             const div = document.createElement("div");
             div.className = "order-card";
+            
+            // Try to parse the items JSON
+            let itemsHtml = "";
+            if (order.items) {
+                try {
+                    const items = JSON.parse(order.items);
+                    if (items.length > 0) {
+                        itemsHtml = "<div class='order-items-list'><h4>Items:</h4><ul>";
+                        items.forEach(item => {
+                            itemsHtml += `<li>${item.quantity}x ${item.name} ($${Number(item.price).toFixed(2)} each)</li>`;
+                        });
+                        itemsHtml += "</ul></div>";
+                    }
+                } catch(e) {
+                    console.error("Could not parse items for order " + order.id, e);
+                }
+            }
+
+            // format date
+            const orderDate = new Date(order.created_at).toLocaleString();
 
             div.innerHTML = `
-                <h3>Order ID: ${order.id}</h3>
-                <p>Date: ${order.created_at}</p>
-                <p>Type: ${order.order_type}</p>
-                <p>Total: $${Number(order.total).toFixed(2)}</p>
+                <div class="order-header">
+                    <h3>Order #${order.id}</h3>
+                    <span class="order-type badge ${order.order_type.toLowerCase()}">${order.order_type}</span>
+                </div>
+                <div class="order-details">
+                    <p><strong>Date:</strong> ${orderDate}</p>
+                    <p><strong>Total:</strong> <span class="order-total">$${Number(order.total).toFixed(2)}</span></p>
+                </div>
+                ${itemsHtml}
             `;
 
             container.appendChild(div);

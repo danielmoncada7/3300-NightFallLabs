@@ -5,7 +5,6 @@ const address = document.getElementById("deliveryAddress");
 const email = document.getElementById("contactEmail");
 const name = document.getElementById("cardholderName");
 const card = document.getElementById("cardNumber");
-const tipInput = document.getElementById("tipAmount");
 const message = document.getElementById("checkoutConfirmation");
 
 // gets cart from browser storage
@@ -80,8 +79,16 @@ if (form) {
 
         const tax = subtotal * 0.07;
         const deliveryFee = orderType.value === "Delivery" ? 3.99 : 0;
-        const serviceFee = 1.99;
-        const tip = Number(tipInput.value) || 0;
+        const serviceFee = subtotal * 0.05;
+        
+        let tip = 0;
+        // get the tip from the cart summary if it was populated there
+        const summaryStr = localStorage.getItem("cartSummary");
+        if (summaryStr) {
+            const summary = JSON.parse(summaryStr);
+            tip = summary.tip || 0;
+        }
+        
         const total = subtotal + tax + deliveryFee + serviceFee + tip;
 
         // sends order to backend

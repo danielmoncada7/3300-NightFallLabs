@@ -5,7 +5,59 @@ document.addEventListener("DOMContentLoaded", function () {
     const deliveryFeeValue = document.getElementById("deliveryFeeValue");
     const serviceFeeValue = document.getElementById("serviceFeeValue");
     const tipValue = document.getElementById("tipValue");
+    const tipAmountInput = document.getElementById("tipAmount");
     const totalValue = document.getElementById("totalValue");
+    const tipButtons = document.querySelectorAll(".tip-btn");
+    const customTipContainer = document.getElementById("customTipContainer");
+
+    let currentSubtotal = 0;
+    let selectedTipPercentage = 15; // default tip
+    let isCustomTip = false;
+
+    // Handle tip button clicks
+    tipButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Unselect all buttons visually
+            tipButtons.forEach(b => {
+                b.classList.remove("primary-button");
+                b.classList.add("secondary-button");
+            });
+
+            // Select this button
+            this.classList.remove("secondary-button");
+            this.classList.add("primary-button");
+
+            if (this.id === "customTipBtn") {
+                isCustomTip = true;
+                customTipContainer.style.display = "flex";
+            } else {
+                isCustomTip = false;
+                customTipContainer.style.display = "none";
+                selectedTipPercentage = parseFloat(this.getAttribute("data-tip"));
+            }
+
+            updateTotals(currentSubtotal);
+        });
+    });
+
+    if (tipAmountInput) {
+        tipAmountInput.addEventListener('input', function() {
+            if (isCustomTip) {
+                // Prevent negative numbers
+                if (parseFloat(tipAmountInput.value) < 0) {
+                    tipAmountInput.value = "0";
+                }
+                updateTotals(currentSubtotal);
+            }
+        });
+    }
+
+    // Set default initial tip button selection visually
+    const defaultTipBtn = document.querySelector(".tip-btn[data-tip='15']");
+    if (defaultTipBtn) {
+        defaultTipBtn.classList.remove("secondary-button");
+        defaultTipBtn.classList.add("primary-button");
+    }
 
     function renderCart() {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -32,9 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p>Price: $${Number(item.price).toFixed(2)}</p>
                     <p>
                         Quantity: 
-                        <button onclick="changeQuantity(${index}, -1)">-</button>
-                        ${item.quantity}
-                        <button onclick="changeQuantity(${index}, 1)">+</button>
+                        <input type="number" min="1" value="${item.quantity}" onchange="setQuantity(${index}, this.value)" style="width: 60px; padding: 4px; border-radius: 4px; border: 1px solid var(--border-color);">
                     </p>
                     <p>Total: $${itemTotal.toFixed(2)}</p>
                     <button onclick="removeItem(${index})">Remove</button>
@@ -48,10 +98,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateTotals(subtotal) {
+        currentSubtotal = subtotal; // store so tip input listener can re-use it
+        
         const taxRate = 0.07; // 7% tax
         const serviceRate = 0.05; // 5% service fee
         const deliveryFee = subtotal > 0 ? 3.99 : 0; // example $3.99 delivery fee
-        const tip = 0; // standard $0 tip for now
+        
+        let tip = 0;
+        if (subtotal > 0) {
+            if (isCustomTip && tipAmountInput) {
+                tip = parseFloat(tipAmountInput.value) || 0;
+            } else {
+                tip = subtotal * (selectedTipPercentage / 100);
+                if (tipAmountInput) tipAmountInput.value = tip.toFixed(2); // sync custom input field just in case
+            }
+        }
 
         const tax = subtotal * taxRate;
         const serviceFee = subtotal * serviceRate;
@@ -71,14 +132,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Expose functions globally for the onclick handlers
-    window.changeQuantity = function (index, delta) {
+    window.setQuantity = function (index, value) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         if (cart[index]) {
-            cart[index].quantity += delta;
+            const newQuantity = parseInt(value, 10);
             
-            // Remove item if quantity falls to 0 or below
-            if (cart[index].quantity <= 0) {
+            // Remove item if quantity falls to 0 or below, otherwise update
+            if (newQuantity <= 0 || isNaN(newQuantity)) {
                 cart.splice(index, 1);
+            } else {
+                cart[index].quantity = newQuantity;
             }
             
             localStorage.setItem("cart", JSON.stringify(cart));

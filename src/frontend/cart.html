@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Cart</title>
+    <title>All American Eats - Cart</title>
 </head>
 <body>
     <header>
@@ -13,6 +13,7 @@
             <a href="cart.html">Cart</a>
             <a href="orders.html">Orders</a>
         </nav>
+        <div class="site-title">All American Eats</div>
     </header>
 
     <main class="page">
@@ -28,17 +29,38 @@
                 <p><strong>Tax:</strong> <span id="taxValue">$0.00</span></p>
                 <p><strong>Delivery Fee:</strong> <span id="deliveryFeeValue">$0.00</span></p>
                 <p><strong>Service Fee:</strong> <span id="serviceFeeValue">$0.00</span></p>
-                <p><strong>Tip:</strong> <span id="tipValue">$0.00</span></p>
+                
+                <div class="tip-section" style="margin-top: var(--spacing-sm);">
+                    <p style="margin-bottom: var(--spacing-sm);"><strong>Select Tip:</strong></p>
+                    <div class="tip-buttons" style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); flex-wrap: wrap;">
+                        <button type="button" class="btn secondary-button tip-btn" data-tip="10">10%</button>
+                        <button type="button" class="btn secondary-button tip-btn" data-tip="15">15%</button>
+                        <button type="button" class="btn secondary-button tip-btn" data-tip="20">20%</button>
+                        <button type="button" class="btn secondary-button tip-btn" data-tip="0">None</button>
+                        <button type="button" class="btn secondary-button tip-btn" id="customTipBtn">Custom</button>
+                    </div>
+                    <div id="customTipContainer" style="display: none; justify-content: flex-start; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-sm);">
+                        <label for="tipAmount" style="margin: 0;">Custom Amount ($):</label>
+                        <input type="number" id="tipAmount" min="0" step="0.01" value="0.00" style="width: 100px; margin: 0; text-align: right;" />
+                    </div>
+                    <p><strong>Tip Applied:</strong> <span id="tipValue">$0.00</span></p>
+                </div>
+                
                 <h3>Total: <span id="totalValue">$0.00</span></h3>
             </div>
 
             <!--Navigation buttons-->
             <div class="item-actions">
-                <a href="index.html">Continue Shopping</a>
-                <a href="checkout.html">Proceed to Checkout</a>
+                <a href="index.html" class="btn secondary-button">Continue Shopping</a>
+                <a href="checkout.html" class="btn primary-button">Proceed to Checkout</a>
             </div>
         </section>
     </main>
+    
+    <footer>
+        <p>&copy; 2026 All American Eats. Created by Nightfall Labs.</p>
+    </footer>
+
     <!--loads cart functionality  -->
     <script src="cart.js"></script>
 </body>

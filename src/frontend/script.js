@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // dynamically generate HTML for each menu item
         items.forEach(item => {
             const div = document.createElement("div");
-            div.className = "menu-item-card";
+            div.className = "menu-item";
             
             div.innerHTML = `
                 <h2>${item.name} - $${Number(item.price).toFixed(2)}</h2>
