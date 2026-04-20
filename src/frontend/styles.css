@@ -1,0 +1,348 @@
+/* ==========================================================================
+   Nightfall Labs - Main Stylesheet
+   Compliant with WCAG 2.1 Level AA Requirements
+   Mobile, Tablet, and Desktop Responsive Design
+   ========================================================================== */
+
+:root {
+    /* Accessible Color Palette */
+    --primary-color: #2c3e50;
+    --secondary-color: #e74c3c;
+    --background-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --text-primary: #2b2b2b; /* High contrast against background */
+    --text-secondary: #555555;
+    --border-color: #cccccc;
+    --focus-color: #3498db;
+    --error-color: #c0392b;
+    --success-color: #27ae60;
+    
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --base-font-size: 16px;
+    --line-height: 1.5;
+
+    /* Spacing */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Borders & Roles */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--base-font-size);
+    line-height: var(--line-height);
+    background-color: var(--background-color);
+    color: var(--text-primary);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+    color: var(--focus-color);
+}
+
+/* Accessibility Focus States */
+:focus {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+h1, h2, h3, h4 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+header {
+    background-color: var(--primary-color);
+    color: var(--surface-color);
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.header-search {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    width: 100%;
+}
+
+.header-search input {
+    flex: 1;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.header-nav {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.header-nav a {
+    color: #ffffff;
+    font-weight: bold;
+    padding: var(--spacing-sm);
+}
+
+.header-nav a:hover, .header-nav a:focus {
+    text-decoration: none;
+    border-bottom: 2px solid var(--surface-color);
+}
+
+/* ==========================================================================
+   Layout (Page, Sidebar, Content)
+   ========================================================================== */
+.page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+aside.filters {
+    flex: 1 1 250px;
+    background-color: var(--surface-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    height: fit-content;
+}
+
+.content {
+    flex: 3 1 600px;
+    background-color: var(--surface-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* ==========================================================================
+   Form Elements & Buttons
+   ========================================================================== */
+label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: bold;
+}
+
+select, input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: normal;
+}
+
+button {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    padding: 10px var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+button.secondary-button {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+    margin-top: var(--spacing-sm);
+}
+
+button.secondary-button:hover {
+    background-color: #999999;
+}
+
+/* ==========================================================================
+   Menu Items Grid
+   ========================================================================== */
+#menuContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.menu-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-item h3 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.menu-item p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.menu-item .price {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.menu-item .flags {
+    font-size: 0.85rem;
+    color: var(--error-color);
+    margin-bottom: var(--spacing-sm);
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Modals
+   ========================================================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-button {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    padding: var(--spacing-sm);
+}
+
+.close-button:hover {
+    color: var(--error-color);
+    background: transparent;
+}
+
+/* ==========================================================================
+   Cart & Checkout specific
+   ========================================================================== */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#cartTotals {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+}
+
+#cartTotals p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+}
+
+#cartTotals h3 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-md);
+    border-top: 2px solid var(--border-color);
+    padding-top: var(--spacing-md);
+}
+
+/* ==========================================================================
+   Responsive Design & Media Queries
+   ========================================================================== */
+@media (max-width: 768px) {
+    .page {
+        flex-direction: column;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-nav {
+        justify-content: center;
+    }
+}
